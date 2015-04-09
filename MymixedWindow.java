@@ -40,6 +40,7 @@ public class MymixedWindow extends JFrame {
     private Image ilibre=null;
     private Image ilie=null;
     private Image ifixe=null;
+    private Image omegaIcon=null;
     private JLabel lplatforme;
     private JLabel lballe;
     private JLabel lressort;
@@ -123,7 +124,12 @@ public class MymixedWindow extends JFrame {
         setVisible(true);
         this.setLayout(null);
         chargement();
-       
+        try {
+            omegaIcon = ImageIO.read(new File("image\\omega.png"));        }
+            catch (IOException e){
+                System.out.println ("Could not load image file.");
+        }
+        this.setIconImage(new ImageIcon("image\\omega.png").getImage());
         
         
         
