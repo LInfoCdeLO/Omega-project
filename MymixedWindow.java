@@ -1,3 +1,5 @@
+package omegaproject;
+
 
 import java.awt.*;
 import java.awt.Color;
@@ -63,13 +65,13 @@ public class MymixedWindow extends JFrame {
         public void paintComponent (Graphics g) {
             if (haveshot) {
                 g.setColor(Color.red);
-                g.fillRect(0, 0, 400, 480);
+                g.fillRect(0, 0, 590, 660);
                 g.setColor(Color.white);
                 g.drawString("play", 100, 150);
             }
             if(!haveshot) {
                 g.setColor(Color.blue);
-                g.fillRect(0, 0, 400, 480);
+                g.fillRect(0, 0, 590, 660);
                 g.setColor(Color.white);
                 g.drawString("stop", 100, 150);
             }
@@ -116,7 +118,7 @@ public class MymixedWindow extends JFrame {
     public MyPanel p;
 
     public  MymixedWindow() {
-        setSize(600,540);           
+        setSize(800,720);           
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
         this.setLayout(null);
@@ -156,21 +158,21 @@ public class MymixedWindow extends JFrame {
         bfixe.setBorder(BorderFactory.createEmptyBorder());
         bfixe.setContentAreaFilled(false); 
         
-        bplateforme.setBounds(new Rectangle(410, 20, 150, 30));
-        lplatforme.setBounds(450, 50, 150, 30);
-        bballe.setBounds(new Rectangle(410, 90, 50, 50));
-        lballe.setBounds(new Rectangle(420,140,150,30));
-        lrayon.setBounds(new Rectangle(500,140,150,30));
-        bressort.setBounds(new Rectangle(400, 170, 75, 56));
-        lressort.setBounds(new Rectangle(415,220,150,30));
-        lraideur.setBounds(new Rectangle(500,220,150,30));
-        blibre.setBounds(new Rectangle(410, 250, 40, 48));
-        llibre.setBounds(new Rectangle(460,260,150,30));
-        blie.setBounds(new Rectangle(400, 300, 55, 49));
-        llie.setBounds(new Rectangle(460,310,150,30));
-        bfixe.setBounds(new Rectangle(410, 350, 43, 60));
-        lfixe.setBounds(new Rectangle(460,360,150,30));
-        jplay.setBounds(new Rectangle(410, 420, 52, 52));
+        bplateforme.setBounds(new Rectangle(600, 20, 150, 30));
+        lplatforme.setBounds(640, 50, 150, 30);
+        bballe.setBounds(new Rectangle(600, 90, 50, 50));
+        lballe.setBounds(new Rectangle(610,140,150,30));
+        lrayon.setBounds(new Rectangle(690,140,150,30));
+        bressort.setBounds(new Rectangle(590, 170, 75, 56));
+        lressort.setBounds(new Rectangle(605,220,150,30));
+        lraideur.setBounds(new Rectangle(690,220,150,30));
+        blibre.setBounds(new Rectangle(600, 250, 40, 48));
+        llibre.setBounds(new Rectangle(650,260,150,30));
+        blie.setBounds(new Rectangle(590, 300, 55, 49));
+        llie.setBounds(new Rectangle(650,310,150,30));
+        bfixe.setBounds(new Rectangle(595, 350, 43, 60));
+        lfixe.setBounds(new Rectangle(640,360,150,30));
+        jplay.setBounds(new Rectangle(600, 420, 52, 52));
         
         
         
@@ -221,7 +223,7 @@ public class MymixedWindow extends JFrame {
         srayon.setPaintLabels(true);
         //srayon.setMinorTickSpacing(10);
         srayon.setMajorTickSpacing(25);
-        srayon.setBounds(new Rectangle(470,100,100,50));
+        srayon.setBounds(new Rectangle(660,100,100,50));
         this.add(srayon);
         srayon.addChangeListener(new ChangeListener(){
            public void stateChanged(ChangeEvent event){
@@ -240,7 +242,7 @@ public class MymixedWindow extends JFrame {
         sraideur.setPaintLabels(true);
         //sraideur.setMinorTickSpacing(10);
         sraideur.setMajorTickSpacing(25);
-        sraideur.setBounds(new Rectangle(470,180,100,50));
+        sraideur.setBounds(new Rectangle(660,180,100,50));
         this.add(sraideur);
         sraideur.addChangeListener(new ChangeListener(){
            public void stateChanged(ChangeEvent event){
@@ -266,7 +268,7 @@ public class MymixedWindow extends JFrame {
         
 
         p =  new MyPanel();
-        p.setBounds(new Rectangle(0, 0, 400, 480));
+        p.setBounds(new Rectangle(0, 0, 590, 660));
         this.add(p);
         repaint();
     }
