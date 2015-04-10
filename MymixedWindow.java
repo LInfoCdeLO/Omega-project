@@ -1,5 +1,3 @@
-package omegaproject;
-
 
 import java.awt.*;
 import java.awt.Color;
@@ -11,6 +9,8 @@ import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 
 import java.io.File;
@@ -25,7 +25,7 @@ import javax.swing.JPanel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-public class MymixedWindow extends JFrame {
+public class MymixedWindow extends JFrame implements MouseListener {
     private JButton jplay;
     private JButton bplateforme;
     private JButton bballe;
@@ -40,7 +40,6 @@ public class MymixedWindow extends JFrame {
     private Image ilibre=null;
     private Image ilie=null;
     private Image ifixe=null;
-    private Image omegaIcon=null;
     private JLabel lplatforme;
     private JLabel lballe;
     private JLabel lressort;
@@ -54,7 +53,22 @@ public class MymixedWindow extends JFrame {
     private int vrayon;
     private int vraideur;
     private char selec;
+    private int clicx;
+    private int clicy;
+    private boolean attenteclic=false;
+    private balle [] tabballe = new balle [100];
+    private int idballe=0;
+    private ressort [] tabressort = new ressort [100];
+    private int idressort=0;
+    private int x1=0;
+    private int y1=0;
+    private int x2=0;
+    private int y2=0;
+    private final int LARGUEUR=590;
+    private final int LONGUEUR=660;
     
+   
+
     public class MyPanel extends JPanel {
         public boolean haveshot;
         
@@ -66,44 +80,44 @@ public class MymixedWindow extends JFrame {
         public void paintComponent (Graphics g) {
             if (haveshot) {
                 g.setColor(Color.red);
-                g.fillRect(0, 0, 590, 660);
+                g.fillRect(0, 0, LARGUEUR, LONGUEUR);
                 g.setColor(Color.white);
                 g.drawString("play", 100, 150);
             }
             if(!haveshot) {
                 g.setColor(Color.blue);
-                g.fillRect(0, 0, 590, 660);
+                g.fillRect(0, 0,LARGUEUR, LONGUEUR);
                 g.setColor(Color.white);
                 g.drawString("stop", 100, 150);
             }
             
             if (selec=='p') {
-                g.drawString("plateforme selectionnée", 10,470);
+                g.drawString("plateforme selectionnÃ©e", 10,470);
                 
             }
             else             
             if (selec=='b') {
-                g.drawString("balle selectionnée", 10,470);
+                g.drawString("balle selectionnÃ©e", 10,470);
                 
             }
             else             
             if (selec=='r') {
-                g.drawString("ressort selectionné", 10,470);
+                g.drawString("ressort selectionnÃ©", 10,470);
                 
             }
             else             
             if (selec=='e') {
-                g.drawString("fixation libre selectionnée", 10,470);
+                g.drawString("fixation libre selectionnÃ©e", 10,470);
                 
             }
             else             
             if (selec=='l') {
-                g.drawString("fixation liée selectionnée", 10,470);
+                g.drawString("fixation liÃ©e selectionnÃ©e", 10,470);
                 
             }
             else             
             if (selec=='f') {
-                g.drawString("fixation fixe selectionnée", 10,470);
+                g.drawString("fixation fixe selectionnÃ©e", 10,470);
                 
             }
             
@@ -124,12 +138,8 @@ public class MymixedWindow extends JFrame {
         setVisible(true);
         this.setLayout(null);
         chargement();
-        try {
-            omegaIcon = ImageIO.read(new File("image\\omega.png"));        }
-            catch (IOException e){
-                System.out.println ("Could not load image file.");
-        }
-        this.setIconImage(new ImageIcon("image\\omega.png").getImage());
+        addMouseListener(this);
+       
         
         
         
@@ -144,7 +154,7 @@ public class MymixedWindow extends JFrame {
         lballe = new JLabel ("Balle");
         lressort = new JLabel ("Ressort");
         llibre = new JLabel (": Libre");
-        llie = new JLabel (": Lié");
+        llie = new JLabel (": LiÃ©");
         lfixe = new JLabel (": Fixe");
         lrayon = new JLabel ("Rayon");
         lraideur = new JLabel("Raideur");
@@ -274,7 +284,7 @@ public class MymixedWindow extends JFrame {
         
 
         p =  new MyPanel();
-        p.setBounds(new Rectangle(0, 0, 590, 660));
+        p.setBounds(new Rectangle(0, 0, LARGUEUR, LONGUEUR));
         this.add(p);
         repaint();
     }
@@ -293,36 +303,40 @@ public class MymixedWindow extends JFrame {
     }
     private void bplatforme_actionPerformed(ActionEvent e) {
         selec='p';
-       System.out.println("bouton plateforme pressé");
+       //System.out.println("bouton plateforme pressÃ©");
        repaint();
     }
     private void bballe_actionPerformed(ActionEvent e) {
        selec = 'b';
-       System.out.println("bouton balle pressé");
+       //System.out.println("bouton balle pressÃ©");
+       attenteclic=true;
+       
         repaint();
 
     }
     private void bressort_actionPerformed(ActionEvent e) {
        selec='r';
-       System.out.println("bouton ressort pressé");
+       //System.out.println("bouton ressort pressÃ©");
+       attenteclic=true;
+
         repaint();
 
     }
     private void blibre_actionPerformed(ActionEvent e) {
        selec='e';
-       System.out.println("bouton libre pressé");
+       //System.out.println("bouton libre pressÃ©");
         repaint();
 
     }
     private void blie_actionPerformed(ActionEvent e) {
        selec='l';
-       System.out.println("bouton lié pressé");
+       //System.out.println("bouton liÃ© pressÃ©");
         repaint();
 
     }
     private void bfixe_actionPerformed(ActionEvent e) {
        selec='f';
-       System.out.println("bouton fixe pressé");
+       //System.out.println("bouton fixe pressÃ©");
         repaint();
 
     }
@@ -364,6 +378,61 @@ public class MymixedWindow extends JFrame {
                 System.out.println ("Could not load image file.");
         }
         
+    }
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        // TODO Implement this method
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        // TODO Implement this method
+        int mouse=e.getButton();
+        System.out.println("test");
+        clicx=e.getX();
+        clicy=e.getY();
+        if(mouse==MouseEvent.BUTTON1 && attenteclic==true && selec=='b' && clicx<=LARGUEUR && clicy<=LONGUEUR ){ //clic gauche
+            
+            tabballe[idballe] = new balle(clicx,clicy,vrayon);
+            System.out.println("la balle "+idballe+ " de rayon "+vrayon+" et de masse "+tabballe[idballe].masse+" a Ã©tÃ© crÃ©Ã© Ã  la position x=" + clicx+" et y=" + clicy);
+            idballe++;
+            attenteclic=false;
+            x1=y1=x2=y2=0; // sÃ©curitÃ© pour gerer le cas d'un vilain qui change d'avis entre les deux clic pour platforme/ressort
+
+        }
+        
+        if(mouse==MouseEvent.BUTTON1 && attenteclic==true && selec=='r' && clicx<=LARGUEUR && clicy<=LONGUEUR) {
+            
+            if (x1==0 && y1==0 && x2==0 && y2==0 ) {
+                x1=clicx;
+                y1=clicy;
+        }
+            else if (x1!=x2 || y1!=y2)  { 
+                x2=clicx;
+                y2=clicy;
+                tabressort[idressort]= new ressort (x1,y1,x2,y2,vraideur);
+                System.out.println("le ressort "+ idressort+" de raideur "+vraideur+" a Ã©tÃ© crÃ©Ã© avec pour premier point x="+x1+" y="+y1+" et pour second point x="+x2+" y="+y2);
+                idressort++;
+                x1=y1=x2=y2=0;
+                attenteclic=false;
+            }
+        }
+                
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        // TODO Implement this method
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        // TODO Implement this method
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        // TODO Implement this method
     }
     public static void main (String [] s) {
         
