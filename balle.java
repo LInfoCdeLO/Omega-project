@@ -1,3 +1,5 @@
+package omegaproject;
+
 public class balle {
     public double masse;
     public int positionx;
@@ -10,8 +12,8 @@ public class balle {
     
     
     public balle (int clicx, int clicy, int rayondef) {
-        positionx=clicx;
-        positiony=clicy;
+        positionx=clicx-8;
+        positiony=clicy-31;
         rayon=rayondef;
         masse=3.14*rayon*rayon*MASSESURFACIQUE; // actuellement la masse varie de 0 à 1 570 000
         accroche = 'e';
