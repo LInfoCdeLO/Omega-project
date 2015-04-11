@@ -1,3 +1,5 @@
+package omegaproject;
+
 
 import java.awt.*;
 import java.awt.Color;
@@ -24,6 +26,8 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import java.awt.BasicStroke;
+
 
 public class MymixedWindow extends JFrame implements MouseListener {
     private JButton jplay;
@@ -56,16 +60,22 @@ public class MymixedWindow extends JFrame implements MouseListener {
     private int clicx;
     private int clicy;
     private boolean attenteclic=false;
-    private balle [] tabballe = new balle [100];
-    private int idballe=0;
+    public balle [] tabballe = new balle [100];
+    public int idballe=0;
     private ressort [] tabressort = new ressort [100];
     private int idressort=0;
+    private platform [] tabplatform=new platform[100];
+    private int idplatform=0;
     private int x1=0;
     private int y1=0;
     private int x2=0;
     private int y2=0;
+    private int x1p=0,x2p=0,y1p=0,y2p=0;
     private final int LARGUEUR=590;
     private final int LONGUEUR=660;
+    private float epaisseurRessort=7;
+
+    
     
    
 
@@ -78,12 +88,16 @@ public class MymixedWindow extends JFrame implements MouseListener {
         }
         
         public void paintComponent (Graphics g) {
+            
+       
+            //Si on est en mode play
             if (haveshot) {
                 g.setColor(Color.red);
                 g.fillRect(0, 0, LARGUEUR, LONGUEUR);
                 g.setColor(Color.white);
                 g.drawString("play", 100, 150);
             }
+            //si on est en mode pause
             if(!haveshot) {
                 g.setColor(Color.blue);
                 g.fillRect(0, 0,LARGUEUR, LONGUEUR);
@@ -92,40 +106,79 @@ public class MymixedWindow extends JFrame implements MouseListener {
             }
             
             if (selec=='p') {
-                g.drawString("plateforme selectionnée", 10,470);
+                g.drawString("plateforme selectionnée", 10,660);
                 
             }
             else             
             if (selec=='b') {
-                g.drawString("balle selectionnée", 10,470);
+                g.drawString("balle selectionnée", 10,660);
                 
             }
             else             
             if (selec=='r') {
-                g.drawString("ressort selectionné", 10,470);
+                g.drawString("ressort selectionné", 10,660);
                 
             }
             else             
             if (selec=='e') {
-                g.drawString("fixation libre selectionnée", 10,470);
+                g.drawString("fixation libre selectionnée", 10,660);
                 
             }
             else             
             if (selec=='l') {
-                g.drawString("fixation liée selectionnée", 10,470);
+                g.drawString("fixation liée selectionnée", 10,660);
                 
             }
             else             
             if (selec=='f') {
-                g.drawString("fixation fixe selectionnée", 10,470);
+                g.drawString("fixation fixe selectionnée", 10,660);
                 
             }
+            
+            // il y a 2 bug, en 1 les balles ne s'affichent pas, problème avec le jpanel et en 2 des qu'on modifie la taille de la fenêtre, le bug apparait
+           if (tabballe[0]!=null){
+               
+                for( int entier=0;entier<idballe;entier++){
+                         g.setColor(Color.white);                
+                         g.fillOval(tabballe[entier].positionx-tabballe[entier].rayon,tabballe[entier].positiony-tabballe[entier].rayon,2*tabballe[entier].rayon,2*tabballe[entier].rayon);
+               }
+           }
+           if (tabplatform[0]!=null){
+                   for( int i=0;i<idplatform;i++){
+                       
+                           g.setColor(Color.green);   
+                                
+                           g.fillPolygon(tabplatform[i].coordx,tabplatform[i].coordy,4);
+                       
+                         Graphics2D g2 = (Graphics2D) g;
+                         BasicStroke line = new BasicStroke(15.0f);
+                         g2.setStroke(line);
+                         g2.drawLine(58, 153, getWidth(), getHeight() );
+                       }
+                   }
+               if (tabressort[0]!=null){
+                       for( int i=0;i<idressort;i++){
+                           
+                               g.setColor(Color.orange);   
+                                    
+                               Graphics2D g2 = (Graphics2D) g;
+                           //Il faut changer le 7 en avec le epaisseurRessort
+                               BasicStroke line = new BasicStroke(epaisseurRessort);
+                               g2.setStroke(line);
+                               g2.drawLine(tabressort[i].positionx1, tabressort[i].positiony1, tabressort[i].positionx2, tabressort[i].positiony2 );
+                           }
+                       }
+           }
+           
+ 
             
             //System.out.println("valeur du rayon "+vrayon);
             //System.out.println("valeur de la raideur "+vraideur);
             
+            
         }
-    }
+    
+    
     
    
     
@@ -138,10 +191,11 @@ public class MymixedWindow extends JFrame implements MouseListener {
         setVisible(true);
         this.setLayout(null);
         chargement();
+        this.setIconImage(new ImageIcon("image\\omega.png").getImage());
         addMouseListener(this);
        
         
-        
+        //creation des boutons
         
         jplay = new JButton(new ImageIcon(iplay));
         bplateforme = new JButton(new ImageIcon(iplatforme));
@@ -229,8 +283,7 @@ public class MymixedWindow extends JFrame implements MouseListener {
                 }
             });
         
-        
-        
+        //création du slider du rayon      
         srayon = new JSlider(); 
         srayon.setMaximum(100);
         srayon.setMinimum(0);
@@ -248,7 +301,7 @@ public class MymixedWindow extends JFrame implements MouseListener {
          });
         
         
-
+        //creation du lider de la raideur
         
         sraideur = new JSlider(); 
         sraideur.setMaximum(100);
@@ -266,6 +319,7 @@ public class MymixedWindow extends JFrame implements MouseListener {
            }   
          });
     
+        // Ajout de tous les widgets
         this.add(jplay);
         this.add(bplateforme);
         this.add(bballe);
@@ -282,7 +336,7 @@ public class MymixedWindow extends JFrame implements MouseListener {
         this.add(llie);
         this.add(lfixe);
         
-
+        //creation finale du jpanel
         p =  new MyPanel();
         p.setBounds(new Rectangle(0, 0, LARGUEUR, LONGUEUR));
         this.add(p);
@@ -298,12 +352,14 @@ public class MymixedWindow extends JFrame implements MouseListener {
         else {
             p.haveshot=true;
         }
+        attenteclic=true;
         selec='s';
         p.repaint();
     }
     private void bplatforme_actionPerformed(ActionEvent e) {
         selec='p';
        //System.out.println("bouton plateforme pressé");
+        attenteclic=true;
        repaint();
     }
     private void bballe_actionPerformed(ActionEvent e) {
@@ -311,7 +367,7 @@ public class MymixedWindow extends JFrame implements MouseListener {
        //System.out.println("bouton balle pressé");
        attenteclic=true;
        
-        repaint();
+       repaint();
 
     }
     private void bressort_actionPerformed(ActionEvent e) {
@@ -381,12 +437,6 @@ public class MymixedWindow extends JFrame implements MouseListener {
     }
     @Override
     public void mouseClicked(MouseEvent e) {
-        // TODO Implement this method
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-        // TODO Implement this method
         int mouse=e.getButton();
         System.out.println("test");
         clicx=e.getX();
@@ -398,6 +448,7 @@ public class MymixedWindow extends JFrame implements MouseListener {
             idballe++;
             attenteclic=false;
             x1=y1=x2=y2=0; // sécurité pour gerer le cas d'un vilain qui change d'avis entre les deux clic pour platforme/ressort
+            repaint();
 
         }
         
@@ -415,10 +466,38 @@ public class MymixedWindow extends JFrame implements MouseListener {
                 idressort++;
                 x1=y1=x2=y2=0;
                 attenteclic=false;
+                repaint();
             }
         }
+        if(mouse==MouseEvent.BUTTON1 && attenteclic==true && selec=='p' && clicx<=LARGUEUR && clicy<=LONGUEUR) {
+            if (x1p==0 && y1p==0 && x2p==0 && y2p==0 ) {
+                x1p=clicx;
+                y1p=clicy;              
                 
+            }
+            else if (x1p!=x2p || y1p!=y2p)  { 
+                int[] premier={x1p,y1p};
+                x2p=clicx;
+                y2p=clicy;
+                int[] deuxieme={x2p,y2p};
+                tabplatform[idplatform]= new platform (premier,deuxieme);
+              
+                System.out.println("la plateforme "+ idplatform+" de longueur "+tabplatform[idplatform].longueur+" a été créé avec pour premier point x= "+x1p+" y="+y1p+" et pour second point x="+x2p+" y="+y2p);
+                idplatform++;
+                x1p=y1p=x2p=y2p=0;
+                attenteclic=false;
+                repaint();
+            }
+        }   
+        // TODO Implement this method
     }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        // TODO Implement this method
+        
+    }
+    
 
     @Override
     public void mouseReleased(MouseEvent e) {
@@ -438,4 +517,5 @@ public class MymixedWindow extends JFrame implements MouseListener {
         
         MymixedWindow c = new MymixedWindow();
     }
-}
+ }
+
