@@ -1,8 +1,10 @@
+package omegaproject;
+
 public class ressort {
-    private int positionx1;
-    private int positionx2;
-    private int positiony1;
-    private int positiony2;
+    public int positionx1;
+    public int positionx2;
+    public int positiony1;
+    public int positiony2;
     private int raideur;
     private char accroche1;
     private char accroche2;
@@ -14,10 +16,10 @@ public class ressort {
     
     
     public ressort( int x1, int y1, int x2, int y2, int raideurdef) {
-        positionx1=x1;
-        positionx2=x2;
-        positiony1=y1;
-        positiony2=y2;
+        positionx1=x1-8;
+        positionx2=x2-8;
+        positiony1=y1-31;
+        positiony2=y2-31;
         raideur=raideurdef;
         accroche1='f';
         accroche2='f';
