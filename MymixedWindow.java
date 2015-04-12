@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 
 import java.io.File;
@@ -29,7 +30,9 @@ import javax.swing.event.ChangeListener;
 import java.awt.BasicStroke;
 
 
-public class MymixedWindow extends JFrame implements MouseListener {
+
+
+public class MymixedWindow extends JFrame implements MouseListener, MouseMotionListener{
     private JButton jplay;
     private JButton bplateforme;
     private JButton bballe;
@@ -59,7 +62,7 @@ public class MymixedWindow extends JFrame implements MouseListener {
     private char selec;
     private int clicx;
     private int clicy;
-    private boolean attenteclic=false;
+    private boolean attenteclic=false,clic=false;
     public balle [] tabballe = new balle [100];
     public int idballe=0;
     private ressort [] tabressort = new ressort [100];
@@ -74,6 +77,8 @@ public class MymixedWindow extends JFrame implements MouseListener {
     private final int LARGUEUR=590;
     private final int LONGUEUR=660;
     private float epaisseurRessort=7;
+    public int x,y;
+    public int largeur=20;
 
     
     
@@ -135,34 +140,75 @@ public class MymixedWindow extends JFrame implements MouseListener {
                 
             }
             
-            // il y a 2 bug, en 1 les balles ne s'affichent pas, problème avec le jpanel et en 2 des qu'on modifie la taille de la fenêtre, le bug apparait
+            //Affichage de la balle avant qu'elle soit crée
+            if(selec=='b'&& attenteclic==true){
+               
+                g.setColor(Color.black);          
+                g.fillOval(x-8-vrayon,y-31-vrayon,2*vrayon,2*vrayon);
+            } 
+            
+            //Affichage du ressort pendant sa création
+               
+            if(selec=='r'&& attenteclic==true&& clic==true){
+                  
+                   g.setColor(Color.black);                                       
+                   Graphics2D g2 = (Graphics2D) g;
+                   BasicStroke line = new BasicStroke(epaisseurRessort);
+                   g2.setStroke(line);
+                   g2.drawLine(clicx-8,clicy-32,x-8,y-31 );
+            }
+                // Affichage de la plateforme pendant sa création
+            
+            if(selec=='p'&& attenteclic==true&& clic==true){
+                      
+                       g.setColor(Color.black);
+                       //creation de la plateforme intermediaire
+                            //creation du des coordonnées du point de base et du point intermediaire pour obtenir l'angle
+                       int[] first=new int[2];
+                       first[0]=clicx; first[1]=clicy;
+                       int[] second=new int[2];
+                       second[0]=x; second[1]=y;
+                            //on calcule l'angle
+                       double angle= angleBetweenTwoPoints(first, second);
+                            //creation des tableaux de coordonnées des 4 points de la plateforme
+                       int []platIntermediairex=new int[4]; 
+                       platIntermediairex[0]=clicx-8;
+                       platIntermediairex[1]=x-8;
+                       platIntermediairex[2]=(int)(x-Math.sin(angle)*largeur)-8;
+                       platIntermediairex[3]=(int)(clicx-Math.sin(angle)*largeur)-8;
+                       
+                       int []platIntermediairey=new int[4]; 
+                       platIntermediairey[0]=clicy-31;
+                       platIntermediairey[1]=y-31;
+                       platIntermediairey[2]=(int)(y+Math.cos(angle)*largeur)-31;
+                       platIntermediairey[3]=(int)(clicy+Math.cos(angle)*largeur)-31;
+                       //affichage de cette plateforme
+                       g.fillPolygon(platIntermediairex,platIntermediairey,4);
+            } 
+               
+            
+            //Affichage balles
+            
+            
            if (tabballe[0]!=null){
                
                 for( int entier=0;entier<idballe;entier++){
-                         g.setColor(Color.white);                
+                         g.setColor(Color.lightGray);                
                          g.fillOval(tabballe[entier].positionx-tabballe[entier].rayon,tabballe[entier].positiony-tabballe[entier].rayon,2*tabballe[entier].rayon,2*tabballe[entier].rayon);
                }
            }
+           //Affichage plateformes
            if (tabplatform[0]!=null){
                    for( int i=0;i<idplatform;i++){
-                       
-                           g.setColor(Color.green);   
-                                
+                           g.setColor(Color.green);                           
                            g.fillPolygon(tabplatform[i].coordx,tabplatform[i].coordy,4);
-                       
-                         Graphics2D g2 = (Graphics2D) g;
-                         BasicStroke line = new BasicStroke(15.0f);
-                         g2.setStroke(line);
-                         g2.drawLine(58, 153, getWidth(), getHeight() );
                        }
                    }
-               if (tabressort[0]!=null){
-                       for( int i=0;i<idressort;i++){
-                           
-                               g.setColor(Color.orange);   
-                                    
+           //Affichage ressorts
+           if (tabressort[0]!=null){
+                       for( int i=0;i<idressort;i++){                           
+                               g.setColor(Color.orange);                                       
                                Graphics2D g2 = (Graphics2D) g;
-                           //Il faut changer le 7 en avec le epaisseurRessort
                                BasicStroke line = new BasicStroke(epaisseurRessort);
                                g2.setStroke(line);
                                g2.drawLine(tabressort[i].positionx1, tabressort[i].positiony1, tabressort[i].positionx2, tabressort[i].positiony2 );
@@ -185,7 +231,7 @@ public class MymixedWindow extends JFrame implements MouseListener {
     
     public MyPanel p;
 
-    public  MymixedWindow() {
+    public  MymixedWindow () {
         setSize(800,720);           
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
@@ -193,6 +239,7 @@ public class MymixedWindow extends JFrame implements MouseListener {
         chargement();
         this.setIconImage(new ImageIcon("image\\omega.png").getImage());
         addMouseListener(this);
+        addMouseMotionListener(this);
        
         
         //creation des boutons
@@ -437,16 +484,19 @@ public class MymixedWindow extends JFrame implements MouseListener {
     }
     @Override
     public void mouseClicked(MouseEvent e) {
+
         int mouse=e.getButton();
         System.out.println("test");
+        
         clicx=e.getX();
         clicy=e.getY();
+
         if(mouse==MouseEvent.BUTTON1 && attenteclic==true && selec=='b' && clicx<=LARGUEUR && clicy<=LONGUEUR ){ //clic gauche
             
             tabballe[idballe] = new balle(clicx,clicy,vrayon);
             System.out.println("la balle "+idballe+ " de rayon "+vrayon+" et de masse "+tabballe[idballe].masse+" a été créé à la position x=" + clicx+" et y=" + clicy);
             idballe++;
-            attenteclic=false;
+            
             x1=y1=x2=y2=0; // sécurité pour gerer le cas d'un vilain qui change d'avis entre les deux clic pour platforme/ressort
             repaint();
 
@@ -457,6 +507,7 @@ public class MymixedWindow extends JFrame implements MouseListener {
             if (x1==0 && y1==0 && x2==0 && y2==0 ) {
                 x1=clicx;
                 y1=clicy;
+                clic=true;
         }
             else if (x1!=x2 || y1!=y2)  { 
                 x2=clicx;
@@ -465,14 +516,15 @@ public class MymixedWindow extends JFrame implements MouseListener {
                 System.out.println("le ressort "+ idressort+" de raideur "+vraideur+" a été créé avec pour premier point x= "+x1+" y="+y1+" et pour second point x="+x2+" y="+y2);
                 idressort++;
                 x1=y1=x2=y2=0;
-                attenteclic=false;
+                clic=false;
                 repaint();
             }
         }
         if(mouse==MouseEvent.BUTTON1 && attenteclic==true && selec=='p' && clicx<=LARGUEUR && clicy<=LONGUEUR) {
             if (x1p==0 && y1p==0 && x2p==0 && y2p==0 ) {
                 x1p=clicx;
-                y1p=clicy;              
+                y1p=clicy;
+                clic=true;
                 
             }
             else if (x1p!=x2p || y1p!=y2p)  { 
@@ -481,15 +533,19 @@ public class MymixedWindow extends JFrame implements MouseListener {
                 y2p=clicy;
                 int[] deuxieme={x2p,y2p};
                 tabplatform[idplatform]= new platform (premier,deuxieme);
-              
                 System.out.println("la plateforme "+ idplatform+" de longueur "+tabplatform[idplatform].longueur+" a été créé avec pour premier point x= "+x1p+" y="+y1p+" et pour second point x="+x2p+" y="+y2p);
                 idplatform++;
                 x1p=y1p=x2p=y2p=0;
-                attenteclic=false;
+                clic=false;
                 repaint();
             }
         }   
-        // TODO Implement this method
+        
+        //Si clic droit on annule les actions
+        if(mouse==MouseEvent.BUTTON3 ) {
+            System.out.println("clicdroit");
+            attenteclic=false;
+        }
     }
 
     @Override
@@ -513,9 +569,30 @@ public class MymixedWindow extends JFrame implements MouseListener {
     public void mouseExited(MouseEvent e) {
         // TODO Implement this method
     }
+    
+     public void mouseMoved( MouseEvent e ) {
+             x=e.getX();
+             y=e.getY();
+             repaint();
+             }
+     
+        public void mouseDragged(MouseEvent e) {
+            // TODO Implement this method
+        }
+    public double angleBetweenTwoPoints(int [] first,int [] last){
+        
+        float distanceHorizontale=(first[0]-last[0]);
+        float distanceVerticale=(first[1]-last[1]);
+        
+        double angle=Math.atan(distanceVerticale/distanceHorizontale);
+        System.out.println(angle);
+        
+        return angle;}
+        
+
     public static void main (String [] s) {
         
         MymixedWindow c = new MymixedWindow();
     }
- }
 
+}
