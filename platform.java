@@ -56,6 +56,9 @@ public class platform {
         int aire=longueur*largeur;
         masse=sigma*(aire);
         
+        //definition points d'accroche
+        accroche1='e';
+        accroche2='e';
         
         
         

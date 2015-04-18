@@ -79,6 +79,7 @@ public class MymixedWindow extends JFrame implements MouseListener, MouseMotionL
     private float epaisseurRessort=7;
     public int x,y;
     public int largeur=20;
+    boolean accroche =false;
 
     
     
@@ -93,6 +94,13 @@ public class MymixedWindow extends JFrame implements MouseListener, MouseMotionL
         }
         
         public void paintComponent (Graphics g) {
+               //Anti-aliasing
+                          
+                Graphics2D g2d = (Graphics2D) g;
+                RenderingHints rhints = g2d.getRenderingHints();
+                boolean antialiasOn = rhints.containsValue(RenderingHints.VALUE_ANTIALIAS_ON);
+                System.out.println(antialiasOn);
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             
        
             //Si on est en mode play
@@ -202,7 +210,35 @@ public class MymixedWindow extends JFrame implements MouseListener, MouseMotionL
                    for( int i=0;i<idplatform;i++){
                            g.setColor(Color.green);                           
                            g.fillPolygon(tabplatform[i].coordx,tabplatform[i].coordy,4);
-                       }
+                       // Affichage des points liées
+                           if(tabplatform[i].accroche1=='l'){ 
+                               g.setColor(Color.cyan);
+                               g.fillOval(tabplatform[i].point1[0]-4-8,tabplatform[i].point1[1]-4-31,8,8);
+                            }
+                           if(tabplatform[i].accroche2=='l'){ 
+                               g.setColor(Color.cyan);
+                               g.fillOval(tabplatform[i].point2[0]-4-8,tabplatform[i].point2[1]-4-31,8,8);
+                            }
+                       //affichage des points libres
+                       if(tabplatform[i].accroche1=='e'){ 
+                           g.setColor(Color.white);
+                           g.fillOval(tabplatform[i].point1[0]-4-8,tabplatform[i].point1[1]-4-31,8,8);
+                        }
+                       if(tabplatform[i].accroche2=='e'){ 
+                           g.setColor(Color.white);
+                           g.fillOval(tabplatform[i].point2[0]-4-8,tabplatform[i].point2[1]-4-31,8,8);
+                        }
+                       //affichage des points fixes
+                       if(tabplatform[i].accroche1=='f'){ 
+                           g.setColor(Color.black);
+                           g.fillOval(tabplatform[i].point1[0]-4-8,tabplatform[i].point1[1]-4-31,8,8);
+                        }
+                       if(tabplatform[i].accroche2=='f'){ 
+                           g.setColor(Color.black);
+                           g.fillOval(tabplatform[i].point2[0]-4-8,tabplatform[i].point2[1]-4-31,8,8);
+                        }
+                   }
+                       
                    }
            //Affichage ressorts
            if (tabressort[0]!=null){
@@ -212,8 +248,38 @@ public class MymixedWindow extends JFrame implements MouseListener, MouseMotionL
                                BasicStroke line = new BasicStroke(epaisseurRessort);
                                g2.setStroke(line);
                                g2.drawLine(tabressort[i].positionx1, tabressort[i].positiony1, tabressort[i].positionx2, tabressort[i].positiony2 );
+                            // affichage des points liés
+                               if(tabressort[i].accroche1=='l'){ 
+                                   g.setColor(Color.cyan);
+                                   g.fillOval(tabressort[i].positionx1-4,tabressort[i].positiony1-4,8,8);
+                               }
+                               if(tabressort[i].accroche2=='l'){ 
+                                   g.setColor(Color.cyan);
+                                   g.fillOval(tabressort[i].positionx2-4,tabressort[i].positiony2-4,8,8);
+                               }
+                           //affichage des points libres
+                               if(tabressort[i].accroche1=='e'){ 
+                                    g.setColor(Color.white);
+                                    g.fillOval(tabressort[i].positionx1-4,tabressort[i].positiony1-4,8,8);
+                               }
+                               if(tabressort[i].accroche2=='e'){ 
+                                    g.setColor(Color.white);
+                                    g.fillOval(tabressort[i].positionx2-4,tabressort[i].positiony2-4,8,8);
+                                }
+                                //affichage des point fixes
+                               if(tabressort[i].accroche1=='f'){ 
+                                    g.setColor(Color.black);
+                                    g.fillOval(tabressort[i].positionx1-4,tabressort[i].positiony1-4,8,8);
+                               }
+                               if(tabressort[i].accroche2=='f'){ 
+                                    g.setColor(Color.black);
+                                    g.fillOval(tabressort[i].positionx2-4,tabressort[i].positiony2-4,8,8);
+                                }
+                                
                            }
                        }
+ 
+           
            }
            
  
@@ -428,18 +494,21 @@ public class MymixedWindow extends JFrame implements MouseListener, MouseMotionL
     private void blibre_actionPerformed(ActionEvent e) {
        selec='e';
        //System.out.println("bouton libre pressé");
+        accroche=true;
         repaint();
 
     }
     private void blie_actionPerformed(ActionEvent e) {
        selec='l';
        //System.out.println("bouton lié pressé");
+       accroche=true;
         repaint();
 
     }
     private void bfixe_actionPerformed(ActionEvent e) {
        selec='f';
-       //System.out.println("bouton fixe pressé");
+       //System.out.println("bouton fixe pressé");7
+       accroche=true;
         repaint();
 
     }
@@ -460,10 +529,12 @@ public class MymixedWindow extends JFrame implements MouseListener, MouseMotionL
             catch (IOException e){
                 System.out.println ("Could not load image file.");
         }
+   
         try {
             iressort = ImageIO.read(new File("image\\ressort.png"));        }
             catch (IOException e){
-                System.out.println ("Could not load image file.");
+            System.out.println ("Could not load image file.");
+            
         }
         try {
             ilibre = ImageIO.read(new File("image\\libre.png"));        }
@@ -484,6 +555,11 @@ public class MymixedWindow extends JFrame implements MouseListener, MouseMotionL
     }
     @Override
     public void mouseClicked(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
 
         int mouse=e.getButton();
         System.out.println("test");
@@ -540,17 +616,115 @@ public class MymixedWindow extends JFrame implements MouseListener, MouseMotionL
                 repaint();
             }
         }   
-        
+        //si un des bouton de point d'accroche est presse
+        if(mouse==MouseEvent.BUTTON1 && attenteclic==true && selec=='l' && clicx<=LARGUEUR && clicy<=LONGUEUR) {
+            accroche=true;
+        }
+        if(mouse==MouseEvent.BUTTON1 && attenteclic==true && selec=='f' && clicx<=LARGUEUR && clicy<=LONGUEUR) {
+            accroche=true;
+        }
+        if(mouse==MouseEvent.BUTTON1 && attenteclic==true && selec=='e' && clicx<=LARGUEUR && clicy<=LONGUEUR) {
+            accroche=true;
+        }
+        if(accroche){
+            int [] clic= new int[2];
+            clic[0]=clicx;clic[1]=clicy;
+            for(int i=0;i<idplatform;i++){
+                // On verifie si la souris est dans le rectangle, cf methode
+                boolean c=false;
+                c=inTheRectangle(tabplatform[i].point1,tabplatform[i].point3,clic,tabplatform[i].angle);
+                if(c ){
+                    System.out.println(" la souris est dans le rectangle n°"+i);
+                    double dist1=distance(clic,tabplatform[i].point1);
+                    double dist2=distance(clic,tabplatform[i].point3);
+                    if (dist1<dist2){
+                        System.out.println("point d'accroche 1 plateforme choisi avec pour fixation:"+ selec);
+                        tabplatform[i].accroche1=selec;
+                        
+                    }
+                    if (dist1>dist2){
+                        System.out.println("point d'accroche 2 plateforme choisi avec pour fixation:"+selec);
+                        tabplatform[i].accroche2=selec;
+                    }
+                    }
+                    
+                }
+            for(int i=0;i<idressort;i++){
+                double dist1=distance(tabressort[i].point1,clic);
+                double dist2=distance(tabressort[i].point2,clic);
+                //si on clic autour de 10 pixel du point d'accroche, on affecte le point d'accroche
+                if (dist1<10){
+                        System.out.println("Point d'accroche 1 ressort n°"+i+"choisi");
+                        tabressort[i].accroche1=selec;
+                }
+                if (dist2<10){
+                    System.out.println("Point d'accroche 2 ressort n°"+i+"choisi");
+                    tabressort[i].accroche2=selec;
+                }
+            }
+        }
+        //Si un point d'accroche du ressort est censé être lié et qu'il appartient a une partie d'une plateforme alors les coordonnées du ressort sont les mêmes que le point d'accroche 2 du ressort
+        for(int i=0;i<idplatform;i++){
+            //Pour le point d'accroche 1 des plateformes
+            if(tabplatform[i].accroche1=='l'){
+
+                for(int j=0;j<idressort;j++){
+                    boolean c=false;
+                    c=inTheRectangle(tabplatform[i].point1,tabplatform[i].point3,tabressort[j].point1,tabplatform[i].angle);
+                    //on verifie que le point est bien dans la premiere moitié de la plateforme
+                    double distance1=distance(tabplatform[i].point1,tabressort[j].point1);
+                    double distance2=distance(tabplatform[i].point2,tabressort[j].point1);
+                    //point d'accroche 1 plat et ressort
+                    if(c && tabressort[j].accroche1=='l'&& distance1<distance2){               
+                        tabressort[j].positionx1=tabplatform[i].point1[0]-8;
+                        tabressort[j].positiony1=tabplatform[i].point1[1]-31;
+                    }
+                    boolean d=false;
+                    d=inTheRectangle(tabplatform[i].point1,tabplatform[i].point3,tabressort[j].point2,tabplatform[i].angle);
+                    double dist1=distance(tabplatform[i].point1,tabressort[j].point2);
+                    double dist2=distance(tabplatform[i].point2,tabressort[j].point2);
+                    //point d'accroche 1 plat et 2 ressort
+                    if(d && tabressort[j].accroche2=='l'&& dist1<dist2){                       
+                        tabressort[j].positionx2=tabplatform[i].point1[0]-8;
+                        tabressort[j].positiony2=tabplatform[i].point1[1]-31;
+                    }
+                }
+            }
+            
+               if(tabplatform[i].accroche2=='l'){
+
+                    for(int j=0;j<idressort;j++){
+                        boolean c=false;
+                        c=inTheRectangle(tabplatform[i].point1,tabplatform[i].point3,tabressort[j].point1,tabplatform[i].angle);
+                        double distance1=distance(tabplatform[i].point1,tabressort[j].point1);
+                        double distance2=distance(tabplatform[i].point2,tabressort[j].point1);
+                        //point d'accroche 2 plateforme et 1 ressort
+                        if(c&& tabressort[j].accroche1=='l'&& distance2<distance1){               
+                            tabressort[j].point1[0]=tabplatform[i].point2[0]-8;
+                            tabressort[j].point1[1]=tabplatform[i].point2[1]-31;
+                        }
+                        boolean d=false;
+                        d=inTheRectangle(tabplatform[i].point1,tabplatform[i].point3,tabressort[j].point2,tabplatform[i].angle);
+                        double dist1=distance(tabplatform[i].point1,tabressort[j].point2);
+                        double dist2=distance(tabplatform[i].point2,tabressort[j].point2);
+                        // point d'accroche 2 plat et ressort
+                        if(d && tabressort[j].accroche2=='l'&& dist2<dist1){                       
+                            tabressort[j].positionx2=tabplatform[i].point2[0]-8;
+                            tabressort[j].positiony2=tabplatform[i].point2[1]-31;
+                        }
+                    }
+                }
+            repaint();
+        }
         //Si clic droit on annule les actions
         if(mouse==MouseEvent.BUTTON3 ) {
-            System.out.println("clicdroit");
+            System.out.println("clic droit");
             attenteclic=false;
-        }
-    }
+            accroche=false; 
+            repaint();
 
-    @Override
-    public void mousePressed(MouseEvent e) {
-        // TODO Implement this method
+        }
+        
         
     }
     
@@ -576,7 +750,7 @@ public class MymixedWindow extends JFrame implements MouseListener, MouseMotionL
              repaint();
              }
      
-        public void mouseDragged(MouseEvent e) {
+    public void mouseDragged(MouseEvent e) {
             // TODO Implement this method
         }
     public double angleBetweenTwoPoints(int [] first,int [] last){
@@ -585,9 +759,28 @@ public class MymixedWindow extends JFrame implements MouseListener, MouseMotionL
         float distanceVerticale=(first[1]-last[1]);
         
         double angle=Math.atan(distanceVerticale/distanceHorizontale);
+        if (angle<0 && first[1]<last[1]){
+            angle= Math.PI+angle;
+        }
+        if(angle>0 && first[1]>last[1]){
+            angle=angle-Math.PI;
+        }
         System.out.println(angle);
         
         return angle;}
+    public double distance(int[] first, int [] last){
+        double dist= Math.sqrt((first[0]-last[0])*(first[0]-last[0])+(first[1]-last[1])*(first[1]-last[1]) )  ;
+        return dist;
+    }
+    public boolean inTheRectangle(int [] point1,int [] point3,int [] clic, double angle){
+        boolean c=false;
+        double angle1= angleBetweenTwoPoints(point1,clic);
+        double angle2= angleBetweenTwoPoints(point3,clic);
+        if((angle1-angle)>0 && (angle1-angle)<Math.PI/2 && (angle2+Math.PI/2-angle)<0 && (angle2+Math.PI/2-angle)>-Math.PI/2 ){
+            c=true;
+        }
+        return c;
+    }
         
 
     public static void main (String [] s) {

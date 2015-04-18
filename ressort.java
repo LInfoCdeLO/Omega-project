@@ -5,9 +5,11 @@ public class ressort {
     public int positionx2;
     public int positiony1;
     public int positiony2;
-    private int raideur;
-    private char accroche1;
-    private char accroche2;
+    public int raideur;
+    public char accroche1;
+    public char accroche2;
+    public int[] point1=new int [2];
+    public int[] point2=new int [2];
     private double vitessex1;
     private double vitessey1;
     private double vitessex2;
@@ -20,8 +22,10 @@ public class ressort {
         positionx2=x2-8;
         positiony1=y1-31;
         positiony2=y2-31;
+        point1[0]=x1;point1[1]=y1;
+        point2[0]=x2;point2[1]=y2;
         raideur=raideurdef;
-        accroche1='f';
-        accroche2='f';
+        accroche1='e';
+        accroche2='e';
     }
 }
