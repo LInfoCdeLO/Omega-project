@@ -99,7 +99,6 @@ public class MymixedWindow extends JFrame implements MouseListener, MouseMotionL
                 Graphics2D g2d = (Graphics2D) g;
                 RenderingHints rhints = g2d.getRenderingHints();
                 boolean antialiasOn = rhints.containsValue(RenderingHints.VALUE_ANTIALIAS_ON);
-                System.out.println(antialiasOn);
                 g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             
        
@@ -155,9 +154,9 @@ public class MymixedWindow extends JFrame implements MouseListener, MouseMotionL
                 g.fillOval(x-8-vrayon,y-31-vrayon,2*vrayon,2*vrayon);
             } 
             
-            //Affichage du ressort pendant sa création
+            //Affichage du ressort pendant sa création, les 4 dernieres conditions corrigent le bug du clic droit
                
-            if(selec=='r'&& attenteclic==true&& clic==true){
+            if(selec=='r'&& attenteclic==true&& clic==true &&clicx!=0&& clicy!=0  && x!=0&& y!=0){
                   
                    g.setColor(Color.black);                                       
                    Graphics2D g2 = (Graphics2D) g;
@@ -165,9 +164,9 @@ public class MymixedWindow extends JFrame implements MouseListener, MouseMotionL
                    g2.setStroke(line);
                    g2.drawLine(clicx-8,clicy-32,x-8,y-31 );
             }
-                // Affichage de la plateforme pendant sa création
+            // Affichage de la plateforme pendant sa création, les 4 dernieres conditions corrigent le bug du clic droit
             
-            if(selec=='p'&& attenteclic==true&& clic==true){
+            if(selec=='p'&& attenteclic==true&& clic==true && x!=0&& y!=0&&clicx!=0&& clicy!=0){
                       
                        g.setColor(Color.black);
                        //creation de la plateforme intermediaire
@@ -188,8 +187,14 @@ public class MymixedWindow extends JFrame implements MouseListener, MouseMotionL
                        int []platIntermediairey=new int[4]; 
                        platIntermediairey[0]=clicy-31;
                        platIntermediairey[1]=y-31;
-                       platIntermediairey[2]=(int)(y+Math.cos(angle)*largeur)-31;
-                       platIntermediairey[3]=(int)(clicy+Math.cos(angle)*largeur)-31;
+                       if( angle>-Math.PI/2&&angle<Math.PI/2){
+                            platIntermediairey[2]=(int)(y+Math.cos(angle)*largeur)-31;
+                            platIntermediairey[3]=(int)(clicy+Math.cos(angle)*largeur)-31;
+                        }
+                       if( angle<-Math.PI/2 ||angle>Math.PI/2){
+                            platIntermediairey[2]=(int)(y+Math.cos(angle)*largeur)-31;
+                            platIntermediairey[3]=(int)(clicy+Math.cos(angle)*largeur)-31;
+                        }
                        //affichage de cette plateforme
                        g.fillPolygon(platIntermediairex,platIntermediairey,4);
             } 
@@ -328,9 +333,9 @@ public class MymixedWindow extends JFrame implements MouseListener, MouseMotionL
         
         jplay.setBorder(BorderFactory.createEmptyBorder());
         jplay.setContentAreaFilled(false); 
-        bplateforme.setBorder(BorderFactory.createEmptyBorder());
+       // bplateforme.setBorder(BorderFactory.createEmptyBorder());
         bplateforme.setContentAreaFilled(false); 
-        bballe.setBorder(BorderFactory.createEmptyBorder());
+       // bballe.setBorder(BorderFactory.createEmptyBorder());
         bballe.setContentAreaFilled(false); 
         bressort.setBorder(BorderFactory.createEmptyBorder());
         bressort.setContentAreaFilled(false); 
@@ -409,12 +414,12 @@ public class MymixedWindow extends JFrame implements MouseListener, MouseMotionL
         this.add(srayon);
         srayon.addChangeListener(new ChangeListener(){
            public void stateChanged(ChangeEvent event){
-               vrayon=(int)srayon.getValue();
+               vrayon=(int)(srayon.getValue()/3);
            }   
          });
         
         
-        //creation du lider de la raideur
+        //creation du slider de la raideur
         
         sraideur = new JSlider(); 
         sraideur.setMaximum(100);
@@ -721,6 +726,7 @@ public class MymixedWindow extends JFrame implements MouseListener, MouseMotionL
             System.out.println("clic droit");
             attenteclic=false;
             accroche=false; 
+            x1p=y1p=x2p=y2p=x=y=clicx=clicy=x1=y1=x2=y2=0;
             repaint();
 
         }
