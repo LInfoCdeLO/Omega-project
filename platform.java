@@ -20,10 +20,10 @@ public class platform {
     
     public  platform( int[] premier, int[] deuxieme){
 
-        point1[0]=premier[0];
-        point1[1]=premier[1];
-        point2[0]=deuxieme[0];
-        point2[1]=deuxieme[1];
+        point1[0]=premier[0]-8;
+        point1[1]=premier[1]-31;
+        point2[0]=deuxieme[0]-8;
+        point2[1]=deuxieme[1]-31;
         
         angle=getAngle(point1,point2);
         //definition des coordonnées du point en bas à droite
@@ -41,16 +41,16 @@ public class platform {
        
         
         //Tableau des abscisses des 4 points
-        coordx[0]=point1[0]-8;
-        coordx[1]=point2[0]-8;
-        coordx[2]=point3[0]-8;
-        coordx[3]=point4[0]-8;
+        coordx[0]=point1[0];
+        coordx[1]=point2[0];
+        coordx[2]=point3[0];
+        coordx[3]=point4[0];
         
         //Tableau des ordonnées des 4 points
-        coordy[0]=point1[1]-31;
-        coordy[1]=point2[1]-31;
-        coordy[2]=point3[1]-31;
-        coordy[3]=point4[1]-31;
+        coordy[0]=point1[1];
+        coordy[1]=point2[1];
+        coordy[2]=point3[1];
+        coordy[3]=point4[1];
         
         //definition de la masse de la plateforme
         int aire=longueur*largeur;
@@ -66,21 +66,22 @@ public class platform {
     }
     public double getAngle(int [] first,int [] last){
         
-        float distanceHorizontale=(first[0]-last[0]);
-        float distanceVerticale=(first[1]-last[1]);
-        
-        double angle=Math.atan(distanceVerticale/distanceHorizontale);
-        System.out.println(angle);
-        
-        return angle;}
-  /*  public int longueur(platform p){
-        int longueur= 0;
-       
-        longueur=(int)(Math.sqrt((p.point1[0]-p.point2[0])*(p.point1[0]-p.point2[0])+(p.point1[1]-p.point2[1])*(p.point1[1]-p.point2[1])));
-        return longueur;}
+            float distanceHorizontale=(first[0]-last[0]);
+            float distanceVerticale=(first[1]-last[1]);
+            
+            double angle=Math.atan(distanceVerticale/distanceHorizontale);
+            if (angle<0 && first[1]<last[1]){
+                angle= Math.PI+angle;
+            }
+            if(angle>0 && first[1]>last[1]){
+                angle=angle-Math.PI;
+            }
+            System.out.println(angle);
+            
+            return angle;}
     
     
-    }*/
+    
         
 }
     

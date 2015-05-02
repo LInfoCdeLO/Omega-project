@@ -22,8 +22,8 @@ public class ressort {
         positionx2=x2-8;
         positiony1=y1-31;
         positiony2=y2-31;
-        point1[0]=x1;point1[1]=y1;
-        point2[0]=x2;point2[1]=y2;
+        point1[0]=positionx1;point1[1]=positiony1;
+        point2[0]=positionx2;point2[1]=positiony2;
         raideur=raideurdef;
         accroche1='e';
         accroche2='e';

@@ -55,6 +55,7 @@ public class MymixedWindow extends JFrame implements MouseListener, MouseMotionL
     private JLabel lfixe;
     private JLabel lrayon;
     private JLabel lraideur;
+    private JLabel lplay;
     private JSlider srayon;
     private JSlider sraideur;
     private int vrayon;
@@ -100,69 +101,71 @@ public class MymixedWindow extends JFrame implements MouseListener, MouseMotionL
                 RenderingHints rhints = g2d.getRenderingHints();
                 boolean antialiasOn = rhints.containsValue(RenderingHints.VALUE_ANTIALIAS_ON);
                 g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            
+                
+                //transparence, si on a envie de mettre de la transparence, vers varier le nombre devant le f entre 0 et 1
+                /*
+                AlphaComposite alcom = AlphaComposite.getInstance( AlphaComposite.SRC_OVER, 1f);
+                g2d.setComposite(alcom);*/
        
             //Si on est en mode play
             if (haveshot) {
                 g.setColor(Color.red);
                 g.fillRect(0, 0, LARGUEUR, LONGUEUR);
                 g.setColor(Color.white);
-                g.drawString("play", 100, 150);
+                g.drawString("Play", LARGUEUR-40, LONGUEUR-10);
             }
             //si on est en mode pause
             if(!haveshot) {
                 g.setColor(Color.blue);
                 g.fillRect(0, 0,LARGUEUR, LONGUEUR);
                 g.setColor(Color.white);
-                g.drawString("stop", 100, 150);
+                g.drawString("Pause", LARGUEUR-40, LONGUEUR-10);
             }
             
             if (selec=='p') {
-                g.drawString("plateforme selectionnée", 10,660);
+                g.drawString("Plateforme selectionnée", 10,660);
                 
             }
             else             
             if (selec=='b') {
-                g.drawString("balle selectionnée", 10,660);
+                g.drawString("Balle selectionnée", 10,660);
                 
             }
             else             
             if (selec=='r') {
-                g.drawString("ressort selectionné", 10,660);
+                g.drawString("Ressort selectionné", 10,660);
                 
             }
             else             
             if (selec=='e') {
-                g.drawString("fixation libre selectionnée", 10,660);
+                g.drawString("Fixation libre selectionnée", 10,660);
                 
             }
             else             
             if (selec=='l') {
-                g.drawString("fixation liée selectionnée", 10,660);
+                g.drawString("Fixation liée selectionnée", 10,660);
                 
             }
             else             
             if (selec=='f') {
-                g.drawString("fixation fixe selectionnée", 10,660);
+                g.drawString("Fixation fixe selectionnée", 10,660);
                 
             }
             
             //Affichage de la balle avant qu'elle soit crée
-            if(selec=='b'&& attenteclic==true){
-               
-                g.setColor(Color.black);          
-                g.fillOval(x-8-vrayon,y-31-vrayon,2*vrayon,2*vrayon);
+            if(selec=='b'&& attenteclic==true){                                         
+                g2d.setColor(Color.black);          
+                g2d.fillOval(x-8-vrayon,y-31-vrayon,2*vrayon,2*vrayon);
             } 
             
             //Affichage du ressort pendant sa création, les 4 dernieres conditions corrigent le bug du clic droit
                
             if(selec=='r'&& attenteclic==true&& clic==true &&clicx!=0&& clicy!=0  && x!=0&& y!=0){
                   
-                   g.setColor(Color.black);                                       
-                   Graphics2D g2 = (Graphics2D) g;
+                   g.setColor(Color.black);                 
                    BasicStroke line = new BasicStroke(epaisseurRessort);
-                   g2.setStroke(line);
-                   g2.drawLine(clicx-8,clicy-32,x-8,y-31 );
+                   g2d.setStroke(line);
+                   g2d.drawLine(clicx-8,clicy-32,x-8,y-31 );
             }
             // Affichage de la plateforme pendant sa création, les 4 dernieres conditions corrigent le bug du clic droit
             
@@ -218,29 +221,29 @@ public class MymixedWindow extends JFrame implements MouseListener, MouseMotionL
                        // Affichage des points liées
                            if(tabplatform[i].accroche1=='l'){ 
                                g.setColor(Color.cyan);
-                               g.fillOval(tabplatform[i].point1[0]-4-8,tabplatform[i].point1[1]-4-31,8,8);
+                               g.fillOval(tabplatform[i].point1[0]-4,tabplatform[i].point1[1]-4,8,8);
                             }
                            if(tabplatform[i].accroche2=='l'){ 
                                g.setColor(Color.cyan);
-                               g.fillOval(tabplatform[i].point2[0]-4-8,tabplatform[i].point2[1]-4-31,8,8);
+                               g.fillOval(tabplatform[i].point2[0]-4,tabplatform[i].point2[1]-4,8,8);
                             }
                        //affichage des points libres
                        if(tabplatform[i].accroche1=='e'){ 
                            g.setColor(Color.white);
-                           g.fillOval(tabplatform[i].point1[0]-4-8,tabplatform[i].point1[1]-4-31,8,8);
+                           g.fillOval(tabplatform[i].point1[0]-4,tabplatform[i].point1[1]-4,8,8);
                         }
                        if(tabplatform[i].accroche2=='e'){ 
                            g.setColor(Color.white);
-                           g.fillOval(tabplatform[i].point2[0]-4-8,tabplatform[i].point2[1]-4-31,8,8);
+                           g.fillOval(tabplatform[i].point2[0]-4,tabplatform[i].point2[1]-4,8,8);
                         }
                        //affichage des points fixes
                        if(tabplatform[i].accroche1=='f'){ 
                            g.setColor(Color.black);
-                           g.fillOval(tabplatform[i].point1[0]-4-8,tabplatform[i].point1[1]-4-31,8,8);
+                           g.fillOval(tabplatform[i].point1[0]-4,tabplatform[i].point1[1]-4,8,8);
                         }
                        if(tabplatform[i].accroche2=='f'){ 
                            g.setColor(Color.black);
-                           g.fillOval(tabplatform[i].point2[0]-4-8,tabplatform[i].point2[1]-4-31,8,8);
+                           g.fillOval(tabplatform[i].point2[0]-4,tabplatform[i].point2[1]-4,8,8);
                         }
                    }
                        
@@ -326,24 +329,25 @@ public class MymixedWindow extends JFrame implements MouseListener, MouseMotionL
         lballe = new JLabel ("Balle");
         lressort = new JLabel ("Ressort");
         llibre = new JLabel (": Libre");
-        llie = new JLabel (": Lié");
+        llie = new JLabel (": Liée");
         lfixe = new JLabel (": Fixe");
         lrayon = new JLabel ("Rayon");
         lraideur = new JLabel("Raideur");
+        lplay=new JLabel("Play/Pause");
         
-        jplay.setBorder(BorderFactory.createEmptyBorder());
+        //jplay.setBorder(BorderFactory.createEmptyBorder());
         jplay.setContentAreaFilled(false); 
        // bplateforme.setBorder(BorderFactory.createEmptyBorder());
         bplateforme.setContentAreaFilled(false); 
        // bballe.setBorder(BorderFactory.createEmptyBorder());
         bballe.setContentAreaFilled(false); 
-        bressort.setBorder(BorderFactory.createEmptyBorder());
+       // bressort.setBorder(BorderFactory.createEmptyBorder());
         bressort.setContentAreaFilled(false); 
-        blibre.setBorder(BorderFactory.createEmptyBorder());
+        //blibre.setBorder(BorderFactory.createEmptyBorder());
         blibre.setContentAreaFilled(false); 
-        blie.setBorder(BorderFactory.createEmptyBorder());
+        //blie.setBorder(BorderFactory.createEmptyBorder());
         blie.setContentAreaFilled(false); 
-        bfixe.setBorder(BorderFactory.createEmptyBorder());
+        //bfixe.setBorder(BorderFactory.createEmptyBorder());
         bfixe.setContentAreaFilled(false); 
         
         bplateforme.setBounds(new Rectangle(600, 20, 150, 30));
@@ -351,16 +355,17 @@ public class MymixedWindow extends JFrame implements MouseListener, MouseMotionL
         bballe.setBounds(new Rectangle(600, 90, 50, 50));
         lballe.setBounds(new Rectangle(610,140,150,30));
         lrayon.setBounds(new Rectangle(690,140,150,30));
-        bressort.setBounds(new Rectangle(590, 170, 75, 56));
+        bressort.setBounds(new Rectangle(605, 165, 43, 63));
         lressort.setBounds(new Rectangle(605,220,150,30));
         lraideur.setBounds(new Rectangle(690,220,150,30));
-        blibre.setBounds(new Rectangle(600, 250, 40, 48));
-        llibre.setBounds(new Rectangle(650,260,150,30));
-        blie.setBounds(new Rectangle(590, 300, 55, 49));
-        llie.setBounds(new Rectangle(650,310,150,30));
-        bfixe.setBounds(new Rectangle(595, 350, 43, 60));
-        lfixe.setBounds(new Rectangle(640,360,150,30));
-        jplay.setBounds(new Rectangle(600, 420, 52, 52));
+        blibre.setBounds(new Rectangle(600, 250, 55, 55));
+        llibre.setBounds(new Rectangle(660,260,150,30));
+        blie.setBounds(new Rectangle(600,320, 55, 55));
+        llie.setBounds(new Rectangle(660,330,150,30));
+        bfixe.setBounds(new Rectangle(600,390, 55, 55));
+        lfixe.setBounds(new Rectangle(660,400,150,30));
+        jplay.setBounds(new Rectangle(650, 550, 85, 85));
+        lplay.setBounds(new Rectangle(660, 600, 85, 85));
         
         
         
@@ -453,6 +458,7 @@ public class MymixedWindow extends JFrame implements MouseListener, MouseMotionL
         this.add(llibre);
         this.add(llie);
         this.add(lfixe);
+        this.add(lplay);
         
         //creation finale du jpanel
         p =  new MyPanel();
@@ -633,7 +639,7 @@ public class MymixedWindow extends JFrame implements MouseListener, MouseMotionL
         }
         if(accroche){
             int [] clic= new int[2];
-            clic[0]=clicx;clic[1]=clicy;
+            clic[0]=clicx-8;clic[1]=clicy-31;
             for(int i=0;i<idplatform;i++){
                 // On verifie si la souris est dans le rectangle, cf methode
                 boolean c=false;
@@ -681,8 +687,8 @@ public class MymixedWindow extends JFrame implements MouseListener, MouseMotionL
                     double distance2=distance(tabplatform[i].point2,tabressort[j].point1);
                     //point d'accroche 1 plat et ressort
                     if(c && tabressort[j].accroche1=='l'&& distance1<distance2){               
-                        tabressort[j].positionx1=tabplatform[i].point1[0]-8;
-                        tabressort[j].positiony1=tabplatform[i].point1[1]-31;
+                        tabressort[j].positionx1=tabplatform[i].point1[0];
+                        tabressort[j].positiony1=tabplatform[i].point1[1];
                     }
                     boolean d=false;
                     d=inTheRectangle(tabplatform[i].point1,tabplatform[i].point3,tabressort[j].point2,tabplatform[i].angle);
@@ -690,8 +696,8 @@ public class MymixedWindow extends JFrame implements MouseListener, MouseMotionL
                     double dist2=distance(tabplatform[i].point2,tabressort[j].point2);
                     //point d'accroche 1 plat et 2 ressort
                     if(d && tabressort[j].accroche2=='l'&& dist1<dist2){                       
-                        tabressort[j].positionx2=tabplatform[i].point1[0]-8;
-                        tabressort[j].positiony2=tabplatform[i].point1[1]-31;
+                        tabressort[j].positionx2=tabplatform[i].point1[0];
+                        tabressort[j].positiony2=tabplatform[i].point1[1];
                     }
                 }
             }
@@ -705,8 +711,8 @@ public class MymixedWindow extends JFrame implements MouseListener, MouseMotionL
                         double distance2=distance(tabplatform[i].point2,tabressort[j].point1);
                         //point d'accroche 2 plateforme et 1 ressort
                         if(c&& tabressort[j].accroche1=='l'&& distance2<distance1){               
-                            tabressort[j].point1[0]=tabplatform[i].point2[0]-8;
-                            tabressort[j].point1[1]=tabplatform[i].point2[1]-31;
+                            tabressort[j].point1[0]=tabplatform[i].point2[0];
+                            tabressort[j].point1[1]=tabplatform[i].point2[1];
                         }
                         boolean d=false;
                         d=inTheRectangle(tabplatform[i].point1,tabplatform[i].point3,tabressort[j].point2,tabplatform[i].angle);
@@ -714,8 +720,8 @@ public class MymixedWindow extends JFrame implements MouseListener, MouseMotionL
                         double dist2=distance(tabplatform[i].point2,tabressort[j].point2);
                         // point d'accroche 2 plat et ressort
                         if(d && tabressort[j].accroche2=='l'&& dist2<dist1){                       
-                            tabressort[j].positionx2=tabplatform[i].point2[0]-8;
-                            tabressort[j].positiony2=tabplatform[i].point2[1]-31;
+                            tabressort[j].positionx2=tabplatform[i].point2[0];
+                            tabressort[j].positiony2=tabplatform[i].point2[1];
                         }
                     }
                 }
