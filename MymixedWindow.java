@@ -81,6 +81,9 @@ public class MymixedWindow extends JFrame implements MouseListener, MouseMotionL
     public int x,y;
     public int largeur=20;
     boolean accroche =false;
+    private int clignotement=0;
+    private Color couleurclignotement;
+
 
     
     
@@ -91,12 +94,14 @@ public class MymixedWindow extends JFrame implements MouseListener, MouseMotionL
         
         public MyPanel () {
             super();
+
             haveshot=false;
         }
         
         public void paintComponent (Graphics g) {
                //Anti-aliasing
-                          
+         
+                System.out.println("Clignotement= "+ clignotement);
                 Graphics2D g2d = (Graphics2D) g;
                 RenderingHints rhints = g2d.getRenderingHints();
                 boolean antialiasOn = rhints.containsValue(RenderingHints.VALUE_ANTIALIAS_ON);
@@ -171,7 +176,14 @@ public class MymixedWindow extends JFrame implements MouseListener, MouseMotionL
             
             if(selec=='p'&& attenteclic==true&& clic==true && x!=0&& y!=0&&clicx!=0&& clicy!=0){
                       
-                       g.setColor(Color.black);
+                       if(clicy<y){
+                           g.setColor(Color.black);
+                        }
+                       if(clicy>y){
+                           //couleur clignotement à changer quand on aura le timer
+                           if(clignotement>5000){ couleurclignotement=Color.green;}
+                        g.setColor(couleurclignotement);
+                       }
                        //creation de la plateforme intermediaire
                             //creation du des coordonnées du point de base et du point intermediaire pour obtenir l'angle
                        int[] first=new int[2];
@@ -479,6 +491,7 @@ public class MymixedWindow extends JFrame implements MouseListener, MouseMotionL
         attenteclic=true;
         selec='s';
         p.repaint();
+
     }
     private void bplatforme_actionPerformed(ActionEvent e) {
         selec='p';
@@ -614,16 +627,19 @@ public class MymixedWindow extends JFrame implements MouseListener, MouseMotionL
                 clic=true;
                 
             }
-            else if (x1p!=x2p || y1p!=y2p)  { 
+            else if (x1p!=x2p || y1p!=y2p )  { 
                 int[] premier={x1p,y1p};
                 x2p=clicx;
                 y2p=clicy;
-                int[] deuxieme={x2p,y2p};
-                tabplatform[idplatform]= new platform (premier,deuxieme);
-                System.out.println("la plateforme "+ idplatform+" de longueur "+tabplatform[idplatform].longueur+" a été créé avec pour premier point x= "+x1p+" y="+y1p+" et pour second point x="+x2p+" y="+y2p);
-                idplatform++;
+                if(y2p>y1p){
+                    int[] deuxieme={x2p,y2p};
+                    tabplatform[idplatform]= new platform (premier,deuxieme);
+                    System.out.println("la plateforme "+ idplatform+" de longueur "+tabplatform[idplatform].longueur+" a été créé avec pour premier point x= "+x1p+" y="+y1p+" et pour second point x="+x2p+" y="+y2p);
+                    idplatform++;
+                }
                 x1p=y1p=x2p=y2p=0;
                 clic=false;
+                
                 repaint();
             }
         }   
@@ -640,22 +656,22 @@ public class MymixedWindow extends JFrame implements MouseListener, MouseMotionL
         if(accroche){
             int [] clic= new int[2];
             clic[0]=clicx-8;clic[1]=clicy-31;
-            for(int i=0;i<idplatform;i++){
+            for(int j=0;j<idplatform;j++){
                 // On verifie si la souris est dans le rectangle, cf methode
                 boolean c=false;
-                c=inTheRectangle(tabplatform[i].point1,tabplatform[i].point3,clic,tabplatform[i].angle);
+                c=inTheRectangle(tabplatform[j].point1,tabplatform[j].point3,clic,tabplatform[j].angle);
                 if(c ){
-                    System.out.println(" la souris est dans le rectangle n°"+i);
-                    double dist1=distance(clic,tabplatform[i].point1);
-                    double dist2=distance(clic,tabplatform[i].point3);
+                    System.out.println(" la souris est dans le rectangle n°"+j);
+                    double dist1=distance(clic,tabplatform[j].point1);
+                    double dist2=distance(clic,tabplatform[j].point3);
                     if (dist1<dist2){
                         System.out.println("point d'accroche 1 plateforme choisi avec pour fixation:"+ selec);
-                        tabplatform[i].accroche1=selec;
+                        tabplatform[j].accroche1=selec;
                         
                     }
                     if (dist1>dist2){
                         System.out.println("point d'accroche 2 plateforme choisi avec pour fixation:"+selec);
-                        tabplatform[i].accroche2=selec;
+                        tabplatform[j].accroche2=selec;
                     }
                     }
                     
@@ -788,8 +804,11 @@ public class MymixedWindow extends JFrame implements MouseListener, MouseMotionL
         boolean c=false;
         double angle1= angleBetweenTwoPoints(point1,clic);
         double angle2= angleBetweenTwoPoints(point3,clic);
-        if((angle1-angle)>0 && (angle1-angle)<Math.PI/2 && (angle2+Math.PI/2-angle)<0 && (angle2+Math.PI/2-angle)>-Math.PI/2 ){
+        System.out.println("l'angle 1 est"+ angle1+ "l'angle 2 est: "+angle2);
+        
+        if((angle1-angle)>0 && (angle1-angle)<Math.PI/2  && angle2+Math.PI/2-angle<0&& (angle2)>angle-Math.PI ){
             c=true;
+            System.out.println("yihaaaaaaa");
         }
         return c;
     }
