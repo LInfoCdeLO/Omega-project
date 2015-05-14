@@ -86,25 +86,31 @@ public class MymixedWindow extends JFrame implements MouseListener, MouseMotionL
 
     
     
-    
-    private static final long serialVersionUID = 1L;
     private JMenuBar menuBar = new JMenuBar();
     private JMenu menu1 = new JMenu("Paramètres");
     private JMenu menu1_2 = new JMenu("Milieu");
     private JMenu menu2 = new JMenu("Fichier");
+    private JMenu menu4 = new JMenu("Apparence");
+    private JMenu menu4_2 = new JMenu("Fond d'écran");
+    private JMenu menu4_3 = new JMenu("Theme");
     private JMenu menu3 = new JMenu ("Aide");
 
     private JMenuItem item1 = new JMenuItem("Truc");
     private JMenuItem item2 = new JMenuItem("Fermer");
     private JMenuItem item3 = new JMenuItem("Play/Pause");
     private JMenuItem item5 = new JMenuItem("Truc2");
+    private JMenuItem item8 = new JMenuItem("Tutoriel");
 
     private JCheckBoxMenuItem jcmi1 = new JCheckBoxMenuItem("Gravité");
     private JCheckBoxMenuItem jcmi2 = new JCheckBoxMenuItem("Vent");
 
+    private JRadioButtonMenuItem jrmi0 = new JRadioButtonMenuItem("Vide");
     private JRadioButtonMenuItem jrmi1 = new JRadioButtonMenuItem("Air");
     private JRadioButtonMenuItem jrmi2 = new JRadioButtonMenuItem("Eau");
-
+    
+    private JRadioButtonMenuItem jrmi3 = new JRadioButtonMenuItem("Espace");
+    private JRadioButtonMenuItem jrmi4 = new JRadioButtonMenuItem("Paquerettes");
+    private JRadioButtonMenuItem jrmi5 = new JRadioButtonMenuItem("Mer");
     
     
    
@@ -520,12 +526,14 @@ public class MymixedWindow extends JFrame implements MouseListener, MouseMotionL
         //On met nos radios dans un ButtonGroup
         ButtonGroup bg = new ButtonGroup();
         bg.add(jrmi1);
-        bg.add(jrmi1);
+        bg.add(jrmi2);
+        bg.add(jrmi0);
         //On présélectionne la première radio
         jrmi1.setSelected(true);
 
         this.menu1_2.add(jrmi1);
         this.menu1_2.add(jrmi2);
+        this.menu1_2.add(jrmi0);
 
         //Ajout du sous-menu dans notre menu
         this.menu1.add(this.menu1_2);
@@ -534,8 +542,7 @@ public class MymixedWindow extends JFrame implements MouseListener, MouseMotionL
           public void actionPerformed(ActionEvent arg0) {
             System.exit(0);
           }        
-        });
-        
+        });        
       
         
         this.menu2.add(item3);   
@@ -546,10 +553,37 @@ public class MymixedWindow extends JFrame implements MouseListener, MouseMotionL
             }
         });
 
-        
       
         this.menu2.add(item2);  
         
+        
+        
+        
+            //On met nos radios dans un ButtonGroup
+            ButtonGroup bgp = new ButtonGroup();
+            bgp.add(jrmi3);
+            bgp.add(jrmi4);
+            bgp.add(jrmi5);
+            //On présélectionne la première radio
+            jrmi3.setSelected(true);
+
+            this.menu4_2.add(jrmi3);
+            this.menu4_2.add(jrmi4);
+            this.menu4_2.add(jrmi5);
+
+            //Ajout du sous-menu dans notre menu
+            this.menu4.add(this.menu4_2);       
+        
+        
+        this.menu3.add(item8);
+        
+        item8.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                new FenetreAide().setVisible(true);
+                
+                }
+        });
+               
         
 
         //L'ordre d'ajout va déterminer l'ordre d'apparition dans le menu de gauche à droite
@@ -557,14 +591,25 @@ public class MymixedWindow extends JFrame implements MouseListener, MouseMotionL
         this.menuBar.add(menu2);
         this.menuBar.add(menu1);
         this.setJMenuBar(menuBar);
-        this.menuBar.add(menu3);
+        this.menuBar.add(menu4);
+        this.menuBar.add(menu3);    
         this.setVisible(true);
         }
-        
-        
-        
     
     
+    
+    public class FenetreAide extends JFrame{
+
+        public FenetreAide(){
+        
+            this.setTitle("Tutoriel");
+            this.setSize(500,300);
+            
+        }
+        
+      
+        
+    }
 
     // When the button is pressed, set a variable of the  panel
     // to true, and repaint it.
