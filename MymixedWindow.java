@@ -84,6 +84,26 @@ public class MymixedWindow extends JFrame implements MouseListener, MouseMotionL
     private int clignotement=0;
     private Color couleurclignotement;
 
+    
+    
+    
+    private static final long serialVersionUID = 1L;
+    private JMenuBar menuBar = new JMenuBar();
+    private JMenu menu1 = new JMenu("Paramètres");
+    private JMenu menu1_2 = new JMenu("Milieu");
+    private JMenu menu2 = new JMenu("Fichier");
+    private JMenu menu3 = new JMenu ("Aide");
+
+    private JMenuItem item1 = new JMenuItem("Truc");
+    private JMenuItem item2 = new JMenuItem("Fermer");
+    private JMenuItem item3 = new JMenuItem("Play/Pause");
+    private JMenuItem item5 = new JMenuItem("Truc2");
+
+    private JCheckBoxMenuItem jcmi1 = new JCheckBoxMenuItem("Gravité");
+    private JCheckBoxMenuItem jcmi2 = new JCheckBoxMenuItem("Vent");
+
+    private JRadioButtonMenuItem jrmi1 = new JRadioButtonMenuItem("Air");
+    private JRadioButtonMenuItem jrmi2 = new JRadioButtonMenuItem("Eau");
 
     
     
@@ -477,7 +497,74 @@ public class MymixedWindow extends JFrame implements MouseListener, MouseMotionL
         p.setBounds(new Rectangle(0, 0, LARGUEUR, LONGUEUR));
         this.add(p);
         repaint();
-    }
+        
+        
+        
+
+        //On ajoute les items aux menus      
+        this.menu1.add(item1);
+              
+        // Ajout d'un séparateur
+        this.menu1.addSeparator();
+        
+        this.menu1.add(item5);  
+        this.menu1.addSeparator();
+        
+        
+
+        //On ajoute les éléments dans notre sous-menu
+        this.menu1_2.add(jcmi1);
+        this.menu1_2.add(jcmi2);
+        //Ajout d'un séparateur
+        this.menu1_2.addSeparator();
+        //On met nos radios dans un ButtonGroup
+        ButtonGroup bg = new ButtonGroup();
+        bg.add(jrmi1);
+        bg.add(jrmi1);
+        //On présélectionne la première radio
+        jrmi1.setSelected(true);
+
+        this.menu1_2.add(jrmi1);
+        this.menu1_2.add(jrmi2);
+
+        //Ajout du sous-menu dans notre menu
+        this.menu1.add(this.menu1_2);
+        
+        item2.addActionListener(new ActionListener(){
+          public void actionPerformed(ActionEvent arg0) {
+            System.exit(0);
+          }        
+        });
+        
+      
+        
+        this.menu2.add(item3);   
+        this.menu2.addSeparator();
+        item3.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                jplay_actionPerformed(e);
+            }
+        });
+
+        
+      
+        this.menu2.add(item2);  
+        
+        
+
+        //L'ordre d'ajout va déterminer l'ordre d'apparition dans le menu de gauche à droite
+        //Le premier ajouté sera tout à gauche de la barre de menu et inversement pour le dernier
+        this.menuBar.add(menu2);
+        this.menuBar.add(menu1);
+        this.setJMenuBar(menuBar);
+        this.menuBar.add(menu3);
+        this.setVisible(true);
+        }
+        
+        
+        
+    
+    
 
     // When the button is pressed, set a variable of the  panel
     // to true, and repaint it.
@@ -536,7 +623,8 @@ public class MymixedWindow extends JFrame implements MouseListener, MouseMotionL
         repaint();
 
     }
-  
+    
+    
     public void chargement () {
         try {
             iplay = ImageIO.read(new File("image\\play.png"));        }
@@ -812,6 +900,8 @@ public class MymixedWindow extends JFrame implements MouseListener, MouseMotionL
         }
         return c;
     }
+    
+    
         
 
     public static void main (String [] s) {
