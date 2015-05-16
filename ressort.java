@@ -20,8 +20,8 @@ public class ressort {
     public ressort( int x1, int y1, int x2, int y2, int raideurdef) {
         positionx1=x1-8;
         positionx2=x2-8;
-        positiony1=y1-31;
-        positiony2=y2-31;
+        positiony1=y1-50;
+        positiony2=y2-50;
         point1[0]=positionx1;point1[1]=positiony1;
         point2[0]=positionx2;point2[1]=positiony2;
         raideur=raideurdef;

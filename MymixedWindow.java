@@ -186,7 +186,7 @@ public class MymixedWindow extends JFrame implements MouseListener, MouseMotionL
             //Affichage de la balle avant qu'elle soit crée
             if(selec=='b'&& attenteclic==true){                                         
                 g2d.setColor(Color.black);          
-                g2d.fillOval(x-8-vrayon,y-31-vrayon,2*vrayon,2*vrayon);
+                g2d.fillOval(x-8-vrayon,y-50-vrayon,2*vrayon,2*vrayon);
             } 
             
             //Affichage du ressort pendant sa création, les 4 dernieres conditions corrigent le bug du clic droit
@@ -196,7 +196,7 @@ public class MymixedWindow extends JFrame implements MouseListener, MouseMotionL
                    g.setColor(Color.black);                 
                    BasicStroke line = new BasicStroke(epaisseurRessort);
                    g2d.setStroke(line);
-                   g2d.drawLine(clicx-8,clicy-32,x-8,y-31 );
+                   g2d.drawLine(clicx-8,clicy-51,x-8,y-50 );
             }
             // Affichage de la plateforme pendant sa création, les 4 dernieres conditions corrigent le bug du clic droit
             
@@ -226,15 +226,15 @@ public class MymixedWindow extends JFrame implements MouseListener, MouseMotionL
                        platIntermediairex[3]=(int)(clicx-Math.sin(angle)*largeur)-8;
                        
                        int []platIntermediairey=new int[4]; 
-                       platIntermediairey[0]=clicy-31;
-                       platIntermediairey[1]=y-31;
+                       platIntermediairey[0]=clicy-50;
+                       platIntermediairey[1]=y-50;
                        if( angle>-Math.PI/2&&angle<Math.PI/2){
-                            platIntermediairey[2]=(int)(y+Math.cos(angle)*largeur)-31;
-                            platIntermediairey[3]=(int)(clicy+Math.cos(angle)*largeur)-31;
+                            platIntermediairey[2]=(int)(y+Math.cos(angle)*largeur)-50;
+                            platIntermediairey[3]=(int)(clicy+Math.cos(angle)*largeur)-50;
                         }
                        if( angle<-Math.PI/2 ||angle>Math.PI/2){
-                            platIntermediairey[2]=(int)(y+Math.cos(angle)*largeur)-31;
-                            platIntermediairey[3]=(int)(clicy+Math.cos(angle)*largeur)-31;
+                            platIntermediairey[2]=(int)(y+Math.cos(angle)*largeur)-50;
+                            platIntermediairey[3]=(int)(clicy+Math.cos(angle)*largeur)-50;
                         }
                        //affichage de cette plateforme
                        g.fillPolygon(platIntermediairex,platIntermediairey,4);
@@ -788,7 +788,7 @@ public class MymixedWindow extends JFrame implements MouseListener, MouseMotionL
         }
         if(accroche){
             int [] clic= new int[2];
-            clic[0]=clicx-8;clic[1]=clicy-31;
+            clic[0]=clicx-8;clic[1]=clicy-50;
             for(int j=0;j<idplatform;j++){
                 // On verifie si la souris est dans le rectangle, cf methode
                 boolean c=false;

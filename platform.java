@@ -21,9 +21,9 @@ public class platform {
     public  platform( int[] premier, int[] deuxieme){
 
         point1[0]=premier[0]-8;
-        point1[1]=premier[1]-31;
+        point1[1]=premier[1]-50;
         point2[0]=deuxieme[0]-8;
-        point2[1]=deuxieme[1]-31;
+        point2[1]=deuxieme[1]-50;
         
         angle=getAngle(point1,point2);
         //definition des coordonnées du point en bas à droite
