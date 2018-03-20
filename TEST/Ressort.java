@@ -1,4 +1,4 @@
-package platform;
+﻿package platform;
 
 import java.awt.image.*;
 import javax.swing.*;

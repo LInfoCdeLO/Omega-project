@@ -1,4 +1,4 @@
-package omegaproject;
+ï»¿package omegaproject;
 
 
 
@@ -26,11 +26,11 @@ public class platform {
         point2[1]=deuxieme[1]-50;
         
         angle=getAngle(point1,point2);
-        //definition des coordonnées du point en bas à droite
+        //definition des coordonnÃ©es du point en bas Ã  droite
         point3[0]=(int)(point2[0]-Math.sin(angle)*largeur);
         point3[1]=(int)(point2[1]+Math.cos(angle)*largeur);
         
-        //definition des coordonnées du point en bas a gauche
+        //definition des coordonnÃ©es du point en bas a gauche
         
         point4[0]=(int)(point1[0]-Math.sin(angle)*largeur);
         point4[1]=(int)(point1[1]+Math.cos(angle)*largeur);
@@ -46,7 +46,7 @@ public class platform {
         coordx[2]=point3[0];
         coordx[3]=point4[0];
         
-        //Tableau des ordonnées des 4 points
+        //Tableau des ordonnÃ©es des 4 points
         coordy[0]=point1[1];
         coordy[1]=point2[1];
         coordy[2]=point3[1];
