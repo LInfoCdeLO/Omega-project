@@ -1,5 +1,3 @@
-package omegaproject;
-
 import java.awt.*;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -63,7 +61,7 @@ public class MymixedWindow extends JFrame implements MouseListener, MouseMotionL
     private int clicx;
     private int clicy;
     private boolean attenteclic=false,clic=false;
-    public balle [] tabballe = new balle [100];
+    public balle[] tabballe = new balle[100];
     public int idballe=0;
     private ressort [] tabressort = new ressort [100];
     private int idressort=0;
@@ -158,7 +156,7 @@ public class MymixedWindow extends JFrame implements MouseListener, MouseMotionL
             }
             else             
             if (selec=='b') {
-                g.drawString("Balle selectionnée", 10,660);
+                g.drawString("balle selectionnée", 10,660);
                 
             }
             else             
@@ -363,7 +361,7 @@ public class MymixedWindow extends JFrame implements MouseListener, MouseMotionL
         blie = new JButton(new ImageIcon(ilie));
         bfixe = new JButton(new ImageIcon(ifixe));
         lplatforme = new JLabel ("Plateforme");
-        lballe = new JLabel ("Balle");
+        lballe = new JLabel ("balle");
         lressort = new JLabel ("Ressort");
         llibre = new JLabel (": Libre");
         llie = new JLabel (": Liée");

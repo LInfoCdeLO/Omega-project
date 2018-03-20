@@ -1,3 +1,5 @@
+package omegaproject;
+
 public class balle {
     public double masse;
     public int positionx;

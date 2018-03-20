@@ -1,5 +1,3 @@
-package omegaproject;
-
 public class ressort {
     public int positionx1;
     public int positionx2;
