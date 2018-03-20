@@ -1,5 +1,4 @@
-﻿package omegaproject;
-
+package omegaproject;
 
 import java.awt.*;
 import java.awt.Color;

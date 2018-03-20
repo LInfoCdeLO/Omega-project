@@ -1,4 +1,4 @@
-﻿import java.awt.*;
+import java.awt.*;
 import java.awt.Color;
 import java.awt.Frame;
 import java.awt.event.*;

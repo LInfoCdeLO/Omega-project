@@ -1,4 +1,4 @@
-﻿package omegaproject;
+package omegaproject;
 
 public class balle {
     public double masse;
